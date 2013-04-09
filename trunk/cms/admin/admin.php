@@ -32,11 +32,14 @@ if (isset($_POST['submit'])) {
 	if($email == '')  {		
 		$email_error = "Please provide email!";
 				
-	} else if (!eregi("^[A-Z0-9._%-]+@[A-Z0-9._%-]+\.[A-Z]{2,4}$", $email)) {
+	} 
+	
+	/*
+	else if (!eregi("^[A-Z0-9._%-]+@[A-Z0-9._%-]+\.[A-Z]{2,4}$", $email)) {
 		
 		$email_error = "Invalid email address!";
 		
-	} 
+	} */
 	
 	
 	if (!$username_error && !$password_error & !$email_error) {
@@ -44,17 +47,18 @@ if (isset($_POST['submit'])) {
 	$password = md5($password);
 	
 	$con = mysql_connect("localhost", "root", "");        
-	mysql_select_db("test");        
+	mysql_select_db("bcms");        
     
+	$now = time();
 	
-	$sql = "INSERT INTO `test`.`users` (`id`, `username`, `password`, `email`) 
-	VALUES (NULL, '$username', '$password', '$email');";
+	$sql = "INSERT INTO `users` (`id`, `username`, `password`, `email`, `created_at`) 
+	VALUES (NULL, '$username', '$password', '$email',$now);";
 
 	
     $result = mysql_query($sql);	
 	mysql_close($con);	
 	
-	header ("location: database.php");
+	header ("location: admin.php");
 	
 	}
 }
@@ -65,7 +69,7 @@ if (isset($_POST['submit'])) {
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Bootstrap, from Twitter</title>
+    <title>Bernhardt CMS</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -106,42 +110,26 @@ if (isset($_POST['submit'])) {
 	
 	function validate(form) {				
 	
-		//alert("error");
-	//return true;
+		var error = "";	
+		var username = form.username, password = form.password, email = form.email;
 		
-				
-	var error = "";
-	
-	var username = form.username;
-	var password = form.password;
-	var email = form.email;
-	
-	
-    if (username.value == "") {        
-        error += "Username Required ! \n";
-    } 
-	
-	//validate password
-	if (password.value == "") {        
-        error += "Password Required ! \n";
-    } 
-	
-	//validate email   
-    
-    
-    if (email.value == "") {        
-        error += "You didn't enter an email address.\n";
-    }     	
-	
-	if (error != "") {
-		alert("Some fields need correction:\n" + error);
-		return false;
-	}
-
-	return true;
-  
-	
-	
+		if (username.value == "") {        
+			error += "Username Required ! \n";
+		} 
+		//validate password
+		if (password.value == "") {        
+			error += "Password Required ! \n";
+		} 
+		//validate email       
+		if (email.value == "") {        
+			error += "You didn't enter an email address.\n";
+		}     	
+		
+		if (error != "") {
+			alert("Some fields need correction:\n" + error);
+			return false;
+		}
+		return true;	
 			
 	}	
 	
@@ -151,34 +139,9 @@ if (isset($_POST['submit'])) {
 
   <body>
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="#">Bernhardt College</a>
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="#about">Users</a></li>
-              <li><a href="#contact">Feedback</a></li>
-			  
-			  <?php if ($_SESSION['login']) { ?>
-			  
-              <li><a href="#contact"><?php echo $_SESSION['username']; ?></a></li>
-              <li><a href="logout.php">Logout</a></li>
-			  
-			  <?php } ?>
-			  
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
-    </div>
-
+    <?php include "views/nav.php"; ?>
+	
+	
     <div class="container">
 
       <h1>Welcome, <?php echo ucfirst($_SESSION['username']); ?></h1>	  
@@ -191,7 +154,7 @@ if (isset($_POST['submit'])) {
 	$con = mysql_connect("localhost", "root", "");    
     
 	//Step - 2 (Database)
-	mysql_select_db("test");        
+	mysql_select_db("bcms");        
     
 	//Step - 3 (SQL / Get result)
 	$sql = "SELECT * from `users`";
@@ -248,8 +211,9 @@ if (isset($_POST['submit'])) {
 	  
 	<h3>Add New User </h3>
 
-<form onsubmit="return validate(this);" class="form-horizontal" action="" method="POST"> 
+<form class="form-horizontal" action="" method="POST"> 
   
+  <?php /* onsubmit="return validate(this);" */ ?>
   
   <p style="color:red;">
 	<?php  //if ($error_msg) echo $error_msg;  ?>
