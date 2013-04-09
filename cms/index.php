@@ -1,13 +1,30 @@
+<?php	  	  	
+
+$con = mysql_connect("localhost", "root", "");        	
+mysql_select_db("bcms");        	
+$sql = "SELECT * from `settings`";	
+$result = mysql_query($sql);
+$row = mysql_fetch_assoc($result);
+
+?>
+	
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Bernhardt CMS</title>
+<title><?php echo $row['site_name'];?></title>
 <link href="style.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
 <div id="header">
+
+<div class="header-left">
+	
+	<h1><?php echo $row['site_name'];?><h1>	
+	<small><?php echo $row['site_slogan'];?></small>
+</div>	
+
 <div id="search">
   <form action="" method="get"><table width="131" border="0" cellspacing="0" cellpadding="0">
   <tr>

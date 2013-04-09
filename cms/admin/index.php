@@ -1,6 +1,6 @@
 <?php	
 	session_start();
-	if ($_SESSION['login']) header ("location: database.php");
+	if ($_SESSION['login']) header ("location: admin.php");
 
 	
 	$username = $_POST['username'];	
@@ -13,7 +13,7 @@
 			$password = md5($_POST['password']);		
 			$con = mysql_connect("localhost", "root", "");        
 			
-			mysql_select_db("test");        		
+			mysql_select_db("bcms");        		
 			
 			$sql = "select * from `users` where `username` = '$username' and `password` = '$password'";
 			
@@ -31,7 +31,7 @@
 				$_SESSION['username'] = $username;
 				
 				//redirect to database
-				header ("location: database.php");
+				header ("location: admin.php");
 				
 				
 			}else {
