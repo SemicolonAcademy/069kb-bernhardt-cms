@@ -3,8 +3,8 @@
 	if ($_SESSION['login']) header ("location: admin.php");
 
 	
-	$username = $_POST['username'];	
-	$password = $_POST['password'];		
+	$username = addslashes($_POST['username']);	
+	$password = addslashes($_POST['password']);		
 	
 	if ($_POST['submit']) {		
 		
@@ -12,10 +12,10 @@
 		
 			$password = md5($_POST['password']);		
 			$con = mysql_connect("localhost", "root", "");        
-			
 			mysql_select_db("bcms");        		
 			
-			$sql = "select * from `users` where `username` = '$username' and `password` = '$password'";
+			$sql = "select * from `users` where `username` = '$username' and `password` = '$password' LIMIT 1";
+			
 			
 			$result = mysql_query($sql);				
 			
@@ -29,6 +29,9 @@
 				//set session	
 				$_SESSION['login'] = 1;
 				$_SESSION['username'] = $username;
+				
+				$user_detail = mysql_fetch_assoc($result);
+				$_SESSION['user_id'] = $user_detail['id'];
 				
 				//redirect to database
 				header ("location: admin.php");

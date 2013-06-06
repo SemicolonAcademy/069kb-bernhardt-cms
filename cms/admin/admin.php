@@ -1,10 +1,11 @@
 <?php 
 session_start();
-if (!$_SESSION['login']) header ("location: login.php");
+if (!$_SESSION['login']) header ("location: index.php");
 
 
 //include "actions/user_add.php";
 
+//var_export ($_POST);
 			
 if (isset($_POST['submit'])) {
 
@@ -91,9 +92,11 @@ if (isset($_POST['submit'])) {
     <!-- Fav and touch icons -->
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
-      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
-                    <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
-                                   <link rel="shortcut icon" href="assets/ico/favicon.png">
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
+   <link rel="shortcut icon" href="assets/ico/favicon.png">
+   
+   <script src="assets/js/jquery.js"></script>
   
   <script type="text/javascript">
   
@@ -133,6 +136,36 @@ if (isset($_POST['submit'])) {
 			
 	}	
 	
+	
+	
+	$(document).ready(function(){
+	
+		$(".delete").click(function(){			
+			
+			var href = $(this).attr("href");
+			var btn = this;			
+			
+			$.ajax({
+				type: "GET",
+				url: href,
+				success: function(response) {				
+					if (response == "SUCCESS") {
+						$(btn).closest('tr').fadeOut('slow');
+						
+					}else {
+						alert("Couldn't delete ! Retry.");
+					}
+				}
+			}); 		
+				
+			return false;
+		});
+	});
+	
+	
+
+
+	
   </script>
   
   </head>
@@ -169,8 +202,7 @@ if (isset($_POST['submit'])) {
 	<h3>All Users</h3>  
 	  <table class="table table-hover">
               <thead>
-                <tr>
-                  <th>#</th>
+                <tr>                  
                   <th>Username</th>
                   <th>Email</th>                  
                   <th>Actions</th>
@@ -184,14 +216,13 @@ if (isset($_POST['submit'])) {
 			while ($row = mysql_fetch_assoc($result)) {		
 			  ?>
 			  
-                <tr>
-                  <td><?php echo $i;?> </td>
+                <tr>                
                   <td><?php echo $row['username']; ?></td>
                   <td><?php echo $row['email']; ?></td>                  
                   <td>
 					  <a href="">View</a> | 
 					  <a href="actions/user_edit.php?id=<?php echo $row['id'];?>">Edit</a> | 
-					  <a onclick="return sure();" href="actions/user_delete.php?id=<?php echo $row['id'];?>">Delete</a>
+					  <a class="delete" href="actions/user_delete_ajax.php?id=<?php echo $row['id'];?>">Delete</a>
 				  </td>
 				  
                 </tr>
@@ -267,7 +298,7 @@ if (isset($_POST['submit'])) {
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="assets/js/jquery.js"></script>
+    
     <script src="assets/js/bootstrap-transition.js"></script>
     <script src="assets/js/bootstrap-alert.js"></script>
     <script src="assets/js/bootstrap-modal.js"></script>
