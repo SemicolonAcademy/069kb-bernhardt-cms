@@ -12,7 +12,7 @@
               <li><a href="admin.php">Home</a></li>
               <li><a href="settings.php">Settings</a></li>
               <li><a href="navigations.php">Navigation</a></li>
-              <li><a href="#contact">Posts</a></li>
+              <li><a href="posts.php">Posts</a></li>
               <li><a href="#contact">Banner</a></li>
               <li><a href="#contact">Feedback</a></li>
 			  

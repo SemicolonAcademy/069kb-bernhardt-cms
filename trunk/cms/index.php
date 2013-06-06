@@ -1,7 +1,7 @@
 <?php	  	  	
 
-$con = mysql_connect("localhost", "root", "");        	
-mysql_select_db("bcms");        	
+include "includes/common.php";
+
 $sql = "SELECT * from `settings`";	
 $result = mysql_query($sql);
 $row = mysql_fetch_assoc($result);
@@ -37,15 +37,30 @@ $row = mysql_fetch_assoc($result);
   </form>
   </div>
   <div id="navigation">
-<ul>
-<li><a href="#">Home</a></li>
-<li><a href="#">About us</a></li>
-<li><a href="#">Fruits and Vegetables</a></li>
-<li><a href="#">Products</a></li>
-<li><a href="#">Services</a></li>
-<li><a href="#">Features</a></li>
-<li><a href="#">Contact us</a></li>
-</ul>
+	
+	<ul>
+	
+		<?php 
+	  
+		$nav_sql = "SELECT * from `navigation` 
+					JOIN `navigation_group` g	
+					ON navigation.group_id = g.id
+					WHERE g.`slug` = 'header' 
+					order by navigation.order" ;	
+					
+		$nav_result = mysql_query($nav_sql);		
+		
+		while ($nav =mysql_fetch_assoc($nav_result)){
+		
+		
+		?>
+		
+			<li><a href="<?php echo $nav['url'];?>"><?php echo $nav['url_text'];?></a></li>
+		
+		<?php  } ?>		
+		
+	</ul>
+	
 </div>
 </div>
 <div id="main_image"></div>
@@ -53,26 +68,61 @@ $row = mysql_fetch_assoc($result);
 <table width="790" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td>
-    <div id="content-left">
-    <h1>Welcome to Cultivation Template</h1>
-    <div id="image"><img src="images/image_11.jpg" alt="image1" width="123" height="123"></div> <p>Agriculture is the production of food and goods through farming. Agriculture was the key development that led to the rise of human civilization, with the husbandry of domesticated animals and plants (i.e. crops) creating food surpluses that enabled the development of more densely populated and stratified societies. This is Free Cultivation template for your website design which is under Agriculture category you can add. You can customize the layout of the html page any way you like. <br> <br>
-    Freedesignertemplates.com is a free collection of pre-designed with html layouts for your websites. These different categorized website design are developed by professional designers for you to make your task easy in creating a agricultural website. <br><br>
-    Modern agronomy, plant breeding, pesticides and fertilizers, and technological improvements have sharply increased yields from cultivation, and at the same time have caused widespread ecological damage and negative human health effects. Selective breeding and modern practices in animal husbandry such as intensive pig farming (and similar practices applied to the chicken) have similarly increased the output of meat, but have raised concerns about animal cruelty and the health effects of the antibiotics, growth hormones, and other chemicals commonly used in industrial meat production. The major cultivation agricultural products can be grouped into foods, fibers, fuels, and raw materials.</p><br>
-    <div id="read_more"><a href="#"><img src="images/image_21.jpg" alt="Read More" width="82" height="40"></a></div>
+    
+	<div id="content-left">
+	
+		<?php 
+	  
+		$featured_post_sql = "SELECT * from `posts` where `category` = 4; -- AND `status` = 1";	
+		$featured_post_result = mysql_query($featured_post_sql);		
+		$featured_post =mysql_fetch_assoc($featured_post_result);
+	  
+		?>
+	  
+	
+		<h1><?php echo $featured_post['title'];?></h1>
+		
+		<div id="image">
+			<img src="<?php echo UPLOAD_PATH.$featured_post['image'];?>" width="123" height="123">
+		</div> 
+
+		<p>
+			<?php echo $featured_post['content'];?>
+		</p>
+		<br>
+		
+		<div id="read_more"><a href="#"><img src="images/image_21.jpg" alt="Read More" width="82" height="40"></a></div>
+		
     </div>
+	
     </td>
     <td valign="top"><div id="content-right">
       <div id="latest_news">Latest News</div>
-      <h2>Jan 1, 2010</h2>
-      <div id="news-image"><img src="images/image_14.jpg" alt="image1"></div>
+      
+	  <?php 
+	  
+		$post_sql = "SELECT * from `posts`";	
+		$post_result = mysql_query($post_sql);
+		
+		while ($post =mysql_fetch_assoc($post_result) ) {
+	  
+	  ?>
+	  
+	  <h2><?php echo date("M d, Y",$post['created_at']); ?></h2>
+      <div id="">
+		<img width="230" src="<?php echo UPLOAD_PATH.$post['image']; ?>" alt="image1">
+		</div>
       <div id="news-con">
-      <p>This cultivation web design layouts are built using XHTML and CSS. Get your dream web page html layout at no cost, no extra manpower for your professional website.</p>
+      <p>
+			<?php echo substr ( strip_tags($post['content']),0,150); ?>
+			
+	  </p>
       </div>
-      <h2>Feb 10, 2010</h2>
-      <div id="news-image"><img src="images/image_18.jpg" alt="image2"></div>
-      <div id="news-con">
-      <p>We provide you with professionally designed layouts to make your cultivation company deserves no less in the internet market.</p>
-      </div>
+	  
+	  <?php } ?>    
+	  
+	  
+	  
     </div></td>
   </tr>
 </table>

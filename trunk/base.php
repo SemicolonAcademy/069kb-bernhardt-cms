@@ -39,13 +39,11 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="#">PV Gallery</a>
+          <a class="brand" href="#">Bernhardt College</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li class="active"><a href="#">Home</a></li>
-              <li><a href="#about">USers</a></li>
-              <li><a href="#contact">Photos</a></li>
-              <li><a href="#contact">Videos</a></li>
+              <li><a href="#about">Users</a></li>
               <li><a href="#contact">Feedback</a></li>
             </ul>
           </div><!--/.nav-collapse -->
@@ -55,7 +53,7 @@
 
     <div class="container">
 
-      <h1>Welcome to PV Gallery</h1>
+      <h1>Welcome Admin</h1>
       <p>Use this document as a way to quick start any new project.<br> All you get is this message and a barebones HTML document.</p>
 
     </div> <!-- /container -->

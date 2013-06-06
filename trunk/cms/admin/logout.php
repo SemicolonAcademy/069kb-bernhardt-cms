@@ -5,6 +5,7 @@
 	
 	$_SESSION['login'] = 0;
 	$_SESSION['username'] = "";
+	$_SESSION['user_id'] = 0;
 	
 	//or
 	
